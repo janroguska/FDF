@@ -6,7 +6,7 @@
 /*   By: jroguszk <jroguszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 13:58:18 by jroguszk          #+#    #+#             */
-/*   Updated: 2017/12/14 17:54:53 by jroguszk         ###   ########.fr       */
+/*   Updated: 2017/12/19 12:51:36 by jroguszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-//int     my_key_funct(int keycode, void *param)
-//{
-//	printf("key event %d\n", keycode);
-//	mlx_pixel_put(mlx, win, 300, 300, 0xFF00FF);
-//	return (0);
 
 typedef	struct s_env
 {
@@ -38,7 +32,7 @@ void  draw(void *mlx, void *win)
 		x = 100;
 		while (x < 200)
 		{
-			mlx_pixel_put(mlx, win, x, y, 0xFF0000);
+			mlx_pixel_put(mlx, win, x, y, 0xFF7777);
 			x++;
 		}
 		y++;
