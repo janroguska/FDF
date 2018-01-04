@@ -5,70 +5,82 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jroguszk <jroguszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 13:58:18 by jroguszk          #+#    #+#             */
-/*   Updated: 2017/12/19 12:51:36 by jroguszk         ###   ########.fr       */
+/*   Created: 2018/01/04 10:10:47 by jroguszk          #+#    #+#             */
+/*   Updated: 2018/01/04 17:27:50 by jroguszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "includes/libft/includes/libft.h"
+#include "includes/get_next_line.h"
 #include "minilibx/mlx.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef	struct s_env
+typedef	struct s_coord
 {
-	void	*mlx;
-	void	*win;
-} 				t_env;
+	int x;
+	int y;
+	int z;
+}				t_coord;
 
-void  draw(void *mlx, void *win)
+int		get_image(char *argv, char **grid)
 {
-	int     x;
-	int     y;
+	int				fd;
+	int				ret;
+	int				i;
+	int				j;
+	int				k;
+	int				l;
+	static	t_coord	a;
+	char			**tmp;
+	char			*line;
 
-	y = 100;
-	while (y < 200)
+	i = 0;
+	j = 0;
+	k = 0;
+	fd = open(argv, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	line = ft_strnew(BUFF_SIZE);
+	while ((ret = get_next_line(fd, &line)))
 	{
-		x = 100;
-		while (x < 200)
+		a.y++;
+		*tmp = ft_strnew(ret);
+		tmp = ft_strsplit(line, ' ');
+		while (tmp[i])
 		{
-			mlx_pixel_put(mlx, win, x, y, 0xFF7777);
-			x++;
+			l = ft_atoi(tmp[i]);
+			if (l > j)
+				j = l;
+			if (l < k)
+				k = l;
+			i++;
 		}
-		y++;
+		if (i > a.x)
+			a.x = i;
+		i = 0;
+		free(tmp);
 	}
-}
-
-int  mouse_hook(int button, int x, int y, t_env *e)
-{
-	printf("mouse: %d (%d:%d)\n", button, x, y);
+	free(line);
+	k *= -1;
+	a.z = k + j;
+	*grid = ft_strnew(a.x * a.y * a.z);
+	printf("%d\n", a.x);
+	printf("%d\n", a.y);
+	printf("%d\n", a.z);
 	return (0);
 }
 
-int  expose_hook(t_env *e)
+int		main(int argc, char **argv)
 {
-	draw(e->mlx, e->win);
+	static	t_coord	a;
+	char	*grid;
+
+	get_image(argv[1], &grid);
 	return (0);
+
 }
-
-int  key_hook(int keycode, t_env *e)
-{
-	printf("key: %d\n", keycode);
-	if (keycode == 65307)
-		exit (0);
-	return (0);
-}   
-
-int  main(int argc, char **argv)
-{
-	t_env	e;
-
-	e.mlx = mlx_init();
-	e.win = mlx_new_window(e.mlx, 420, 420, "42");
-	mlx_key_hook(e.win, key_hook, &e);
-	mlx_expose_hook(e.win, expose_hook, &e);
-	mlx_mouse_hook(e.win, mouse_hook, &e);
-	mlx_loop(e.mlx);
-	return (0);
-}
-
