@@ -6,81 +6,138 @@
 /*   By: jroguszk <jroguszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/04 10:10:47 by jroguszk          #+#    #+#             */
-/*   Updated: 2018/01/04 17:27:50 by jroguszk         ###   ########.fr       */
+/*   Updated: 2018/01/08 17:54:25 by jroguszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft/includes/libft.h"
-#include "includes/get_next_line.h"
-#include "minilibx/mlx.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "fdf.h"
 #include <stdio.h>
 
-typedef	struct s_coord
+int		get_size(char *argv)
 {
-	int x;
-	int y;
-	int z;
-}				t_coord;
+	t_var	b;
+	int		i;
 
-int		get_image(char *argv, char **grid)
+	b.fd = open(argv, O_RDONLY);
+	if (b.fd == -1)
+		return (0);
+	while ((b.ret = get_next_line(b.fd, &b.line)) > 0)
+	{
+		if (b.ret == -1)
+			return (0);
+		free(b.line);
+		i++;
+	}
+	free(b.line);
+	if (close(b.fd) == -1)
+		return (0);
+	return (i);
+}
+
+void	store_array(char *line, t_env *e)
 {
-	int				fd;
-	int				ret;
-	int				i;
-	int				j;
-	int				k;
-	int				l;
-	static	t_coord	a;
-	char			**tmp;
-	char			*line;
+	t_var	b;
+	char	*join;
+
+	e->x = 0;
+	b.tmp = ft_strsplit(line, ' ');
+	e->grid[e->y] = (int*)malloc(sizeof(int*) * (sizeof(b.tmp) + 1));
+	free(line);
+	while (b.tmp[e->x])
+	{
+		e->grid[e->y][e->x] = ft_atoi(b.tmp[e->x]);
+		free(b.tmp[e->x]);
+		e->x++;
+	}
+	free(b.tmp);
+}
+
+int		set_up(t_env *e, char *argv)
+{
+	t_var	b;
+
+	e->y = 0;
+	b.fd = open(argv, O_RDONLY);
+	if (b.fd == -1)
+		return (0);
+	if ((b.size = get_size(argv)) <= 0)
+		return (0);
+	if ((e->grid = (int**)malloc(sizeof(int*) * (b.size + 1))) == NULL)
+		return (0);
+	while ((b.ret = get_next_line(b.fd, &b.line)) > 0)
+	{
+		if (b.ret == -1)
+			return (0);
+		store_array(b.line, e);
+		e->y++;
+	}
+	e->grid[e->y] = NULL;
+	free(b.line);
+	close(b.fd);
+	return (0);
+}
+
+int		key_hook(int keycode, t_env *e)
+{
+	if (keycode == 53)
+		exit(0);
+	return (0);
+}
+
+int		ft_round(double i)
+{
+	return (i < 0 ? i - 0.5 : i + 0.5);
+}
+
+void	draw(t_env *e)
+{
+	int		i;
+	int		j;
+	int		x;
+	int		y;
+	int		z;
+	double	x_2;
+	double	y_2;
+	double	z_2;
+	int centre;
 
 	i = 0;
 	j = 0;
-	k = 0;
-	fd = open(argv, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	line = ft_strnew(BUFF_SIZE);
-	while ((ret = get_next_line(fd, &line)))
+	e->i_cos = cos(0.523599);
+	e->i_sin = sin(0.523599);
+	centre = (((WIDTH * HEIGHT) / 2) + WIDTH) / 2;
+	while (i < e->y)
 	{
-		a.y++;
-		*tmp = ft_strnew(ret);
-		tmp = ft_strsplit(line, ' ');
-		while (tmp[i])
+		j = 0;
+		y = 8 * i;	
+		while (j < e->x)
 		{
-			l = ft_atoi(tmp[i]);
-			if (l > j)
-				j = l;
-			if (l < k)
-				k = l;
-			i++;
+			x = 8 * j;
+			z = 8 * e->grid[i][j];
+			x_2 = ft_round(((x * e->i_cos) - (y * e->i_sin)));
+			y_2 = (ft_round(((x * e->i_sin) + (y * e->i_cos))) * WIDTH);
+//			e->addr[ft_round((y_2 + x_2 + centre))] = 0xFFFFFF;
+			e->addr[ft_round((z * e->i_cos) - (x * e->i_sin) + (z * e->i_sin) + (x * e->i_cos) + (y * WIDTH) + centre)] = 0xFFFFFF;
+			j++;
 		}
-		if (i > a.x)
-			a.x = i;
-		i = 0;
-		free(tmp);
+		i++;
 	}
-	free(line);
-	k *= -1;
-	a.z = k + j;
-	*grid = ft_strnew(a.x * a.y * a.z);
-	printf("%d\n", a.x);
-	printf("%d\n", a.y);
-	printf("%d\n", a.z);
-	return (0);
 }
 
 int		main(int argc, char **argv)
 {
-	static	t_coord	a;
-	char	*grid;
+	t_env	e;
 
-	get_image(argv[1], &grid);
+	if (argc != 2)
+		return (0);
+	set_up(&e, argv[1]);
+	e.mlx = mlx_init();
+	e.win = mlx_new_window(e.mlx, WIDTH, HEIGHT, argv[1]);
+	e.img = mlx_new_image(e.mlx, WIDTH, HEIGHT);
+	e.addr = (int*)mlx_get_data_addr(e.img, &e.bits, &e.sizeline, &e.endian);
+	draw(&e);
+	mlx_put_image_to_window(e.mlx, e.win, e.img, 0, 0);
+	mlx_key_hook(e.win, key_hook, &e);
+	mlx_loop(e.mlx);
 	return (0);
-
 }
