@@ -38,13 +38,18 @@ typedef	struct s_env
 	int		x;
 	int		y;
 	int		z;
-	double	i_cos;
-	double	i_sin;
 	int		**grid;
+	int		*addr;
+	int		i;
+	int		j;
+	double	x_2;
+	double	y_2;
+	double	z_2;
+	int		centre;
 	void	*mlx;
 	void	*win;
 	void	*img;
-	int		*addr;
+
 }				t_env;
 
 typedef	struct s_var
@@ -56,12 +61,23 @@ typedef	struct s_var
 	char	*line;
 }				t_var;
 
+typedef	struct s_transform
+{
+	int		x;
+	int		y;
+	int		z;
+	double	r_x;
+	double	r_y;
+	double	r_z;
+}				t_transform;
+
 int		get_size(char *argv);
 void	store_array(char *line, t_env *e);
 int		set_up(t_env *e, char *argv);
 int		key_hook(int keycode, t_env *e);
-void	draw(t_env *e);
+void	draw(t_env *e, t_transform *r);
 int		main(int argc, char **argv);
 int		ft_round(double i);
+void	ft_clear(t_env *e);
 
 #endif
