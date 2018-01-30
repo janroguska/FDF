@@ -6,7 +6,7 @@
 /*   By: jroguszk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:24:34 by jroguszk          #+#    #+#             */
-/*   Updated: 2018/01/25 17:24:38 by jroguszk         ###   ########.fr       */
+/*   Updated: 2018/01/30 15:21:46 by jroguszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_putpixel(double x, double y, t_env *e, t_transform *r)
 		+ r->move_horizontal + e->centre) > HEIGHT * WIDTH
 		|| ft_round(x + (y * WIDTH) + r->move_vertical
 			+ r->move_horizontal + e->centre) < 0
-//		|| POS(x + (WIDTH / 2) + POS(r->move_horizontal)) >= WIDTH)
 		|| POS(x + r->move_horizontal + (WIDTH / 2)) >= WIDTH
 		|| x + r->move_horizontal + (WIDTH / 2) <= 0)
 		return ;

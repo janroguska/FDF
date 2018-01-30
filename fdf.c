@@ -6,7 +6,7 @@
 /*   By: jroguszk <jroguszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/04 10:10:47 by jroguszk          #+#    #+#             */
-/*   Updated: 2018/01/08 17:54:25 by jroguszk         ###   ########.fr       */
+/*   Updated: 2018/01/30 15:23:11 by jroguszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int		main(int argc, char **argv)
 {
 	t_env		e;
 	t_transform	r;
-	int i;
 
 	r.zoom = 0;
 	r.colour = 0xFFFFFF;
@@ -48,7 +47,5 @@ int		main(int argc, char **argv)
 	mlx_key_hook(e.win, key_hook, &e);
 	mlx_put_image_to_window(e.mlx, e.win, e.img, 0, 0);
 	mlx_loop(e.mlx);
-	while (1)
-		i = 1;
 	return (0);
 }
