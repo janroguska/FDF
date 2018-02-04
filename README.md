@@ -18,6 +18,12 @@ FDF takes a valid map from the command line, and projects the coordinates on the
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 
-Once the image has been projected, the user can manipulate the projection in the following ways:
+Once the image has been projected, the user can manipulate the projection by pressing the following keys:
 
-* '&#x2190'
+* X-axis rotation: ◄ & ►
+* Y-axis rotation: ▲ & ▼
+* Z-axis rotation: 'w' & 's'
+* Move around the screen: ↑, ↓, → & ←
+* Zoom in & out: 'z' & 'x'
+* Change wireframe colour: 'r', 'g' & 'b'
+* Change background colour: 'p' & 'o'
