@@ -6,16 +6,26 @@ A programme which takes a file containing an array of x, y, and z coordinates fr
 
 FDF takes a valid map from the command line, and projects the coordinates on the screen in 3D.  The file will look something like this:
 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 '\n'
-0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0 '\n'
-0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 '\n'
-0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 '\n'
-0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0 '\n'
-0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0 '\n'
-0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0 '\n'
-0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0 '\n'
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 '\n'
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0
+
+0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0
+
+0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0
+
+0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0
+
+0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0
+
+0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0
+
+0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 
 Once the image has been projected, the user can manipulate the projection by pressing the following keys:
